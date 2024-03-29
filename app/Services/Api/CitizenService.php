@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Api;
 
-use App\Repositories\CitizenRepository;
-use Illuminate\Pipeline\Pipeline;
+use App\Repositories\Api\CitizenRepository;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 
 class CitizenService
 {
@@ -22,7 +22,7 @@ class CitizenService
         $citizens = app(Pipeline::class)
             ->send($this->repository->getQuery())
             ->thenReturn()
-            ->with('category2')
+            ->with('region','city','disease')
             ->select([
                 'citizens.id',
                 'citizens.first_name',
@@ -38,8 +38,8 @@ class CitizenService
                 'citizens.phone',
                 'citizens.doctor_user_id',
                 'citizens.disease_id'
-            ]);
-
+            ])
+            ->get();
         return $citizens;
     }
 
@@ -48,14 +48,15 @@ class CitizenService
         $validator = $this->repository->toValidate($request->all());
         $msg = "";
         if (!$validator->fails()) {
-            $role = $this->repository->store($request);
-            return response()->successJson(['role' => $role]);
+            $citizen = $this->repository->store($request);
+            return response()->json($citizen);
         } else {
             $errors = $validator->failed();
-            if (empty($errors)) {
+//                dd($errors);
+            if (!empty($errors)) {
                 $msg = "Foydalanuvchi yaratilmadi";
             }
-            return response()->errorJson($msg, 400, $errors);
+            return response()->json($msg, 400);
         }
     }
 

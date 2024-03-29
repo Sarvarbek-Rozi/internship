@@ -1,21 +1,22 @@
 <?php
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
-use App\Repositories\Api\CitizenRepository;
-use App\Services\Api\CitizenService;
-use Illuminate\Http\Request;
 
-class CitizenController extends Controller
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Repositories\Api\DoctorRepository;
+use App\Services\Api\DoctorService;
+use Illuminate\Http\Request;
+class DoctorController extends Controller
 {
     private $service;
     private $repo;
     protected $response;
-//    const RESOURCE_URL_MVD = 'https://resource1.mehnat.uz/services';
 
     public function __construct()
     {
-        $this->service = new CitizenService();
-        $this->repo = new CitizenRepository();
+        $this->service = new DoctorService();
+        $this->repo = new DoctorRepository();
 
 //        $this->middleware('permission:faqs.index')->only(['index']);
 //        $this->middleware('permission:citizens.create')->only(['store']);
@@ -23,26 +24,25 @@ class CitizenController extends Controller
 //        $this->middleware('permission:citizens.update')->only(['update']);
 //        $this->middleware('permission:citizens.delete')->only(['destroy']);
     }
+
     public function index(Request $request)
     {
-        $citizens = $this->service->getAll($request);
-        return response(['citizen' => $citizens]);
-    }
+        $doctors = $this->service->getAll($request)->where('role_id',2)->get();
 
+        return $doctors;
+    }
     public function store(Request $request)
     {
         return $this->service->store($request);
     }
-
     public function show($id)
     {
-        $citizens = $this->service->show($id);
+        $doctors = $this->service->show($id);
         $this->response['result'] = [
-            ' citizen' =>  $citizens
+            ' doctor' =>  $doctors
         ];
         return response()->json($this->response);
     }
-
     public function update(Request $request, $id)
     {
         $result = $this->service->update($request, $id);

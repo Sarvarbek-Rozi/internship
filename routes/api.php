@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\CitizenController;
-use App\Http\Controllers\Api\DoktorController;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +17,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login',[AuthController::class,'login']);
+//    Route::post('login', 'AuthController@login');
+    Route::post('logout',[AuthController::class,'logout']);
+    Route::post('refresh',[AuthController::class,'refresh']);
+    Route::post('me',[AuthController::class,'me']);
+
+
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
     Route::apiResource('citizens', CitizenController::class);
-    Route::apiResource('doctors', DoktorController::class);
+    Route::apiResource('doctors', DoctorController::class);

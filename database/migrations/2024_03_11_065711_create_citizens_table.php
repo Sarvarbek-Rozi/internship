@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('patronymic');
-            $table->string('passport');
-            $table->bigInteger('pin');
+            $table->string('passport')->unique();
+            $table->bigInteger('pin')->unique();
             $table->Integer('gender');
             $table->date('birth_date');
             $table->foreignId('region_id')->constrained();

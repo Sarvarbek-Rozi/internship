@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Api;
 use App\Models\Citizen;
 use Illuminate\Support\Facades\Validator;
 
@@ -54,19 +54,19 @@ class CitizenRepository
     public function toValidate($array, $status = null)
     {
         $rules = [
-            'first_name' => 'required',
-            'last_name' =>  'required',
-            'patronymic' =>  'required',
-            'passport' =>  'required',
-            'pin' =>  'required',
-            'gender' => 'required',
-            'birth_date' =>  'required',
-            'region_id'=>'required',
-            'city_id'=>'required',
-            'address'=>'required',
-            'phone'=>'required',
-            'doctor_user_id'=>'required',
-            'disease_id'=>'required'
+            'first_name' => 'required', 'string', 'max:255',
+            'last_name' =>  'required', 'string', 'max:255',
+            'patronymic' =>  'required', 'string', 'max:255',
+            'passport' =>  'required|unique:citizens|min:9|max:9',
+            'pin' =>  'required|numeric|unique:citizens|digits:14',
+            'gender' => 'required|in:1,2',
+            'birth_date' =>  'required|date_format:Y-m-d',
+            'region_id'=>'required|exists:regions,id',
+            'city_id'=>'required|exists:cities,id',
+            'address'=>'required','string', 'max:255',
+            'phone'=>'required|string',
+            'doctor_user_id'=>'required|exists:users,id',
+            'disease_id'=>'required|exists:diseases,id'
         ];
 
         $validator = Validator::make($array, $rules);
