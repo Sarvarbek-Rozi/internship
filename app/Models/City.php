@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
+    protected $table = 'cities';
+
     protected $fillable =[
         'region_id',
         'name_uz',
@@ -16,4 +18,8 @@ class City extends Model
         'name_cyrl',
         'soato'
     ];
+    public function region() {
+        return $this->belongsTo('App\Models\Region', 'region_id');
+    }
+
 }

@@ -23,9 +23,11 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             RegionSeeder::class,
-            DiseaseSeeder::class,
             CitySeeder::class,
+            DiseaseSeeder::class,
             HospitalSeeder::class,
+            DoctorSeeder::class,
+
         ]);
     }
 }

@@ -15,4 +15,7 @@ class Region extends Model
         'name_cyrl',
         'soato'
     ];
+    public function doctor() {
+        return $this->hasMany('App\Models\Doctor');
+    }
 }

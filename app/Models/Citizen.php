@@ -14,15 +14,14 @@ class Citizen extends Model
             'last_name',
             'patronymic',
             'passport',
-            'pin',
-            'gender',
+            'tin',
             'birth_date',
             'region_id',
             'city_id',
             'address',
             'phone',
             'doctor_user_id',
-            'disease_id',
+            'diseases_id',
 
         ];
     public function region()
@@ -37,7 +36,7 @@ class Citizen extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function disease()
+    public function diseases()
     {
         return $this->belongsTo(Disease::class);
     }

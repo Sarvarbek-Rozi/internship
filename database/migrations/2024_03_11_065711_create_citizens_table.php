@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('patronymic');
             $table->string('passport')->unique();
-            $table->bigInteger('pin')->unique();
-            $table->Integer('gender');
+            $table->bigInteger('tin')->unique();
             $table->date('birth_date');
             $table->foreignId('region_id')->constrained();
             $table->foreignId('city_id')->constrained();
@@ -26,7 +25,7 @@ return new class extends Migration
             $table->string('phone');
             $table->unsignedBigInteger('doctor_user_id');
             $table->foreign('doctor_user_id')->references('id')->on('users');
-            $table->foreignId('disease_id')->constrained();
+            $table->foreignId('diseases_id')->constrained();
 
             $table->timestamps();
         });

@@ -36,8 +36,7 @@ class CitizenController extends Controller
             'lastName' => 'required',
             'patronomycName' => 'required',
             'passport' => 'required',
-            'pin' => 'required',
-            'gender' => 'required',
+            'tin' => 'required',
             'birthday_date' => 'required',
 
         ]);

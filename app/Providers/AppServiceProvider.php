@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Mixins\ResponseFactoryMixin;
+use Illuminate\Routing\ResponseFactory;
+
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ResponseFactory::mixin(new ResponseFactoryMixin());
         //
     }
 }

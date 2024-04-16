@@ -10,7 +10,6 @@ class CitizenController extends Controller
     private $service;
     private $repo;
     protected $response;
-//    const RESOURCE_URL_MVD = 'https://resource1.mehnat.uz/services';
 
     public function __construct()
     {
@@ -26,7 +25,8 @@ class CitizenController extends Controller
     public function index(Request $request)
     {
         $citizens = $this->service->getAll($request);
-        return response(['citizen' => $citizens]);
+
+        return response()->successJson(['citizens' => $citizens]);
     }
 
     public function store(Request $request)
@@ -38,33 +38,40 @@ class CitizenController extends Controller
     {
         $citizens = $this->service->show($id);
         $this->response['result'] = [
-            ' citizen' =>  $citizens
+            'citizen' =>  $citizens
         ];
         return response()->json($this->response);
     }
 
     public function update(Request $request, $id)
     {
-        $result = $this->service->update($request, $id);
-        if($result['status'] == 409) {
-            return response()->json($result['msg'], 200, [], [], 'db');
-        }
-        if($result['status'] == 422) {
-            return response()->json($result['msg'], 200, $result['error'], [], 'db');
-        }
-        return response()->json($result);
+        return $this->service->update($request, $id);
+
     }
 
     public function destroy($id)
     {
-        $citizen = $this->repo->getById($id);
-        if ($citizen) {
-            $citizen->delete();
-            $this->response['success'] = true;
-        } else {
-            $this->response['success'] = false;
-            $this->response['error'] = "Citizen not found";
-        }
-        return response()->json($this->response);
+        return $this->service->destroy($id);
+
     }
+    public function  getPassport(Request $request){
+        if(!empty($request->passport) && !empty($request->tin)) {
+            $data = $this->service->getPassport($request->passport, $request->tin);
+
+            $user = $this->repo->getAuth();
+            $citizen = [
+                'last_name' => $data['result'][0]['surname'],
+                "first_name" => $data['result'][0]['name'],
+                "patronymic" => $data['result'][0]['patronym'],
+                "birth_date" => date('d.m.Y', strtotime($data['result'][0]['birth_date'])),
+//                'region_id' => $user->region_id,
+//                'city_id' => $user->id,
+//                "address" => $data['result'][0]['birth_place'],
+//                "passport" => $data['result'][0]['pnfl'],
+                "id" => null
+            ];
+
+        }
+        return response()->successJson(['citizen' => $citizen]);
+}
 }

@@ -8,14 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['email']]);
+//        $this->middleware('auth:api', ['except' => ['email']]);
         $this->response = [
             'success' => true,
             'result' => [],
@@ -23,14 +19,10 @@ class AuthController extends Controller
         ];
     }
 
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function login()
     {
-
+//        dd('kelli');
         $credentials = request(['email', 'password']);
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -59,12 +51,8 @@ class AuthController extends Controller
         ];
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
+
+    public function me(): \Illuminate\Http\JsonResponse
     {
 
         $user = Auth::user();
@@ -89,24 +77,14 @@ class AuthController extends Controller
         return response()->json($this->response);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
+
+    public function refresh(): \Illuminate\Http\JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+
+    protected function respondWithToken($token): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'access_token' => $token,

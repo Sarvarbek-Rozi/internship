@@ -9,4 +9,7 @@ class Disease extends Model
 {
     use HasFactory;
     protected $fillable=['name'];
+    public function doctors() {
+        return $this->hasMany('App\Models\Doctor');
+    }
 }
